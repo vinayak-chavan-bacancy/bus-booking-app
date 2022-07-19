@@ -7,7 +7,6 @@ const { successResponse, errorResponse } = require("../../utils");
 
 const addSchedule = async (req, res) => {
   try {
-
     const { busId } = req.params;
 
     // check if bus exist or not
@@ -62,7 +61,6 @@ const deleteSchedule = async (req, res) => {
 
 const viewSchedule = async (req, res) => {
   try {
-
     const { busId } = req.params;
 
     // check if bus exist or not
@@ -71,7 +69,7 @@ const viewSchedule = async (req, res) => {
       return errorResponse(req, res, "bus not found", 404);
     }
 
-    const tripData = await travelSchedule.find({busId: busId});
+    const tripData = await travelSchedule.find({ busId: busId });
 
     // check if bus is exist or not
     if (!tripData) {
@@ -79,7 +77,6 @@ const viewSchedule = async (req, res) => {
     } else {
       return successResponse(req, res, tripData, 200);
     }
-
   } catch (error) {
     return errorResponse(req, res, "something went wrong", 400, { err: error });
   }
@@ -102,8 +99,7 @@ const SearchSchedule = async (req, res) => {
     } else {
       return successResponse(req, res, tripData, 200);
     }
-  }
-  catch (error) {
+  } catch (error) {
     return errorResponse(req, res, "something went wrong", 400, { err: error });
   }
 };

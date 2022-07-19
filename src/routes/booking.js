@@ -1,7 +1,7 @@
 const express = require('express');
 
 const {
-  addBooking, cancelBooking, viewBookingByUser, viewBookingByUser
+  addBooking, cancelBooking, viewBookingByUser, viewBookingByTrip
 } = require('../controllers/booking/booking.controller');
 
 const route = express.Router();
