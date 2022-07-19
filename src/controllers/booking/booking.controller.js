@@ -7,6 +7,16 @@ const booking = require("../../models/booking");
 
 const { successResponse, errorResponse } = require("../../utils");
 
+const addBooking = async (req, res) => {
+  try {
+
+    
+    return successResponse(req, res, insertBus, 200);
+  } catch (error) {
+    return errorResponse(req, res, "something went wrong", 500, { err: error });
+  }
+};
+
 const viewBookingByUser = async (req, res) => {
   try {
     const userId = req.params;

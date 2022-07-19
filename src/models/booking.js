@@ -4,9 +4,6 @@ const bookingSchema = new mongoose.Schema({
   userId: {
     type: Schema.Types.ObjectId,
   },
-  busId: {
-    type: Schema.Types.ObjectId,
-  },
   travelScheduleId: {
     type: Schema.Types.ObjectId,
   },
