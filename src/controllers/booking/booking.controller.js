@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 const user = require("../../models/user");
 const bus = require("../../models/bus");
@@ -9,9 +10,31 @@ const { successResponse, errorResponse } = require("../../utils");
 
 const addBooking = async (req, res) => {
   try {
+    const { tripId } = req.params;
+    let status = 'Confirmed';
 
+    // check if trip exist or not
+    const tripData = await travelSchedule.find({ _id: tripId });
+    if (!tripData) 
+      return errorResponse(req, res, "trip not found", 404);
     
-    return successResponse(req, res, insertBus, 200);
+    // creating payload
+    const payload = {
+      userId: req.body.userId,
+      travelScheduleId: tripId,
+      seats: req.body.seats,
+      totalAmount: req.body.totalAmount,
+      bookingDate: new Date().toISOString().slice(0, 10),
+      status: status
+    };
+
+    // adding booking data
+    const newBooking = new booking(payload);
+    const insertBooking = await newBooking.save();
+
+    console.log("booking successfully");
+
+    return successResponse(req, res, insertBooking, 200);
   } catch (error) {
     return errorResponse(req, res, "something went wrong", 500, { err: error });
   }
@@ -19,7 +42,7 @@ const addBooking = async (req, res) => {
 
 const viewBookingByUser = async (req, res) => {
   try {
-    const userId = req.params;
+    const { userId } = req.params;
 
     const bookingData = await booking.find({userId: userId});
 
@@ -36,7 +59,7 @@ const viewBookingByUser = async (req, res) => {
 
 const viewBookingByTrip = async (req, res) => {
   try {
-    const tripId = req.params;
+    const { tripId } = req.params;
     let status = 'Confirmed';
 
     const bookingData = await booking.find({travelScheduleId: tripId, status: status });
@@ -48,6 +71,7 @@ const viewBookingByTrip = async (req, res) => {
       return successResponse(req, res, bookingData, 200);
     }
   } catch (error) {
+    console.log(error.message);
     return errorResponse(req, res, "something went wrong", 400, { err: error });
   }
 };

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = require("mongoose");
 
 const bookingSchema = new mongoose.Schema({
   userId: {
@@ -25,7 +26,7 @@ const bookingSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    enum: ['Confirmed', 'Canceled'],
+    enum: ["Confirmed", "Canceled"],
     trim: true,
   },
 });

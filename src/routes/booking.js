@@ -7,9 +7,9 @@ const {
 const route = express.Router();
 
 // user routes
-route.post('/booking', addBooking);
+route.post('/booking/:tripId', addBooking);
 route.put('/booking/:id', cancelBooking);
-route.get('/myBooking/:userId', viewBookingByUser);
+route.get('/mybooking/:userId', viewBookingByUser);
 
 // admin routes
 route.get('/booking/:tripId', viewBookingByTrip);
