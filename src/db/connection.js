@@ -2,10 +2,13 @@ const mongoose = require('mongoose');
 
 (async () => {
   try {
-    await mongoose.connect(process.env.DB_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(
+      "mongodb://localhost:27017/bus-booking-app?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false",
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }
+    );
   } catch (e) {
     console.log(`connection error ${e}`);
   }

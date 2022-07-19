@@ -1,0 +1,74 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="/css/blogcss.css" />
+    <%- include('../views/partials/links'); %>  
+   
+</head>
+
+<body>
+    <%- include('../views/partials/header'); %>
+        <section class="pt-5 justify-content-center position-relative ">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <% blogs.forEach(blog=> { %>
+                        <div class="card">
+                            <img class="card-img-top"
+                                src="/uploads/<%=blog.photo%>" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title"><%= blog.title %></h5>
+                                <p class="card-text"><%= blog.description.slice(0,99) %></p>
+                                <div style="max-width: fit-content;">
+                                <button type="button" class="btn btn-primary" onclick="likeBlog('<%= blog._id %>')">Like</button>
+                                <label class="ml-1" id="likecount_<%= blog._id %>"><%= blog.like.length %></label>
+                                <button type="button" class="btn btn-danger ml-3" onclick="dislikeBlog('<%= blog._id %>')">Dislike</button>
+                                <label class="ml-1" id="dislikecount_<%= blog._id %>"><%= blog.dislike.length %></label>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+        </section>
+    <%- include('../views/partials/footer'); %>
+    <script>
+        const likeBlog = (id) =>{
+            console.log(id)
+         fetch('/like',{
+             method:"post",
+             headers:{
+                 "Content-Type":"application/json"
+             },
+             body:JSON.stringify({
+                 blogId:id
+             })
+         }).then(res=>res.json())
+         .then(result=>{
+           jQuery('#likecount_' + id).text(result.likeCount)
+           jQuery('#dislikecount_' + id).text(result.dislikeCount)
+            
+         }).catch(err=>{
+             console.log(err)
+         })
+   }
+   const dislikeBlog = (id)=>{
+         fetch('/dislike',{
+             method:"post",
+             headers:{
+                 "Content-Type":"application/json",
+             },
+             body:JSON.stringify({
+                 blogId:id
+             })
+         }).then(res=>res.json())
+         .then(result=>{
+            jQuery('#likecount_' + id).text(result.likeCount)
+            jQuery('#dislikecount_' + id).text(result.dislikeCount)
+         }).catch(err=>{
+           console.log(err)
+       })
+   }
+   </script>
+</body>
+
+</html>

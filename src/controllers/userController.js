@@ -62,8 +62,12 @@ const register = async (req, res) => {
   }
 };
 
-const logout = async (req, res) => {
-  res.send("Hello World!");
+const loginView = async (req, res) => {
+  res.render('login');
 };
 
-module.exports = { login, register, logout };
+const logout = async (req, res) => {
+  
+};
+
+module.exports = { login, register, logout, loginView };
