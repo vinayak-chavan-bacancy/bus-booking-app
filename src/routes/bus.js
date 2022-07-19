@@ -1,10 +1,10 @@
-const express = require("express");
+const express = require('express');
 
 const {
   viewBus,
   addBus,
   deleteBus,
-} = require("../controllers/bus/busController");
+} = require('../controllers/bus/busController');
 
 const route = express.Router();
 
