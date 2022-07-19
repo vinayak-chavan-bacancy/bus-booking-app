@@ -112,6 +112,11 @@
         jQuery("#sign-up").validate({
             rules: {
                 username: "required",
+                phoneno: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 10,
+                },
                 emailID: {
                     required: true,
                     email: true
@@ -123,6 +128,11 @@
             },
             messages: {
                 username: "Please enter username",
+                phoneno: {
+                    required: "Please enter phone number",
+                    minlength: "Please enter valid number",
+                    maxlength: "Please enter valid number",
+                },
                 emailID: {
                     required: "Please enter email",
                     email: "Please enter valid email"
