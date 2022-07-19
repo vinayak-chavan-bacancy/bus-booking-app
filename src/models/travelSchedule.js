@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Schema = require("mongoose");
 
 const travelScheduleSchema = new mongoose.Schema({
   busId: {
@@ -14,7 +15,7 @@ const travelScheduleSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  date: {
+  travelDate: {
     type: String,
     required: true,
     trim: true,
@@ -24,18 +25,18 @@ const travelScheduleSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  arrivalTime: {
+  reachTime: {
     type: String,
     required: true,
     trim: true,
   },
   fareAmount: {
-    type: String,
+    type: Number,
     required: true,
     trim: true,
   },
   totalBooking: {
-    type: String,
+    type: Number,
     required: true,
     trim: true,
   },

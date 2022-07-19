@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   wallet: {
-    type: String,
+    type: Number,
   },
   role: {
     type: String,

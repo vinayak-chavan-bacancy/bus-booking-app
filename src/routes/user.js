@@ -5,7 +5,7 @@ const {
   register,
   logout,
   loginView,
-} = require("../controllers/user/userController");
+} = require("../controllers/user/user.controller");
 
 const route = express.Router();
 

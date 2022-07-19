@@ -34,9 +34,9 @@ const addBus = async (req, res) => {
 
     // insert bus payload in database
     const newbus = new bus(payload);
-    const insertbus = await newbus.save();
+    const insertBus = await newbus.save();
 
-    return successResponse(req, res, insertbus, 200);
+    return successResponse(req, res, insertBus, 200);
   } catch (error) {
     return errorResponse(req, res, 'something went wrong', 500, { err: error });
   }
@@ -49,13 +49,13 @@ const deleteBus = async (req, res) => {
     // check if bus exist or not
     const busData = await bus.findOne({ _id: id });
     if (!busData) {
-      return errorResponse(req, res, 'Bus not found', 404);
+      return errorResponse(req, res, 'bus not found', 404);
     }
 
     // deleteing bus from database
-    const deletebusData = await bus.findByIdAndDelete(id);
+    const deleteBusData = await bus.findByIdAndDelete(id);
 
-    return successResponse(req, res, deletebusData, 200);
+    return successResponse(req, res, deleteBusData, 200);
   } catch (error) {
     return errorResponse(req, res, 'something went wrong', 400, { err: error });
   }

@@ -4,7 +4,7 @@ const {
   viewBus,
   addBus,
   deleteBus,
-} = require('../controllers/bus/busController');
+} = require('../controllers/bus/bus.controller');
 
 const route = express.Router();
 

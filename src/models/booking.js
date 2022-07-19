@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const bookingSchema = new mongoose.Schema({
   userId: {
@@ -11,28 +11,28 @@ const bookingSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
   },
   seats: {
-    type: String,
+    type: Number,
     required: true,
     trim: true,
   },
   totalAmount: {
-    type: String,
+    type: Number,
     required: true,
     trim: true,
   },
   bookingDate: {
-    type: String,
+    type: Date,
     required: true,
     trim: true,
   },
   status: {
     type: String,
     required: true,
-    enum: ["Confirmend", "Canceled"],
+    enum: ['Confirmed', 'Canceled'],
     trim: true,
   },
 });
 
-const booking = new mongoose.model("booking", bookingSchema);
+const booking = new mongoose.model('booking', bookingSchema);
 
 module.exports = booking;

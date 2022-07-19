@@ -2,8 +2,10 @@ require('./src/db/connection');
 const path = require('path');
 const dotenv = require('dotenv');
 const express = require('express');
+
 const userRoutes = require('./src/routes/user');
 const busRoutes = require('./src/routes/bus');
+const travelSchedule = require('./src/routes/travelSchedule');
 
 const app = express();
 dotenv.config();
@@ -17,6 +19,7 @@ app.set('views', path.join(__dirname, 'src', 'views'));
 
 app.use('/', userRoutes);
 app.use('/', busRoutes);
+app.use("/", travelSchedule);
 
 app.listen(port, () => {
     console.log(`connection is live at port ${port}`);
