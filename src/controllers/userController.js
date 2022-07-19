@@ -1,11 +1,10 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
-require('dotenv').config()
+const dotenv = require('dotenv');
 
-const user = require('../models/loginUser');
-const { successResponse, errorResponse } = require('../utils');
-const loginUser = require('../models/loginUser');
+const user = require("../models/user");
+const { successResponse, errorResponse } = require("../utils");
 
 const login = async (req, res) => {
   try {
@@ -14,75 +13,57 @@ const login = async (req, res) => {
     const password = req.body.password;
 
     // check for email exist or not
-    const userData = await loginUser.findOne({ emailID: emailID });
+    const userData = await user.findOne({ emailID: emailID });
     if (!userData) {
-      return errorResponse(req, res, 'Invalid credentials.', 404);
+      return errorResponse('Invalid credentials!', 404);
     }
 
     // check for the password
     const isMatch = await bcrypt.compare(password, userData.password);
-    if(!isMatch){
-      return errorResponse(req, res, 'Invalid credentials.', 404);
+    if (!isMatch) {
+      return errorResponse('Invalid credentials!', 404);
     } else {
 
       // jwt token created
-      let accessToken = userData.getToken({exp: 60*60, secret: process.env.SECRET});
+      let accessToken = userData.getToken({
+        exp: 60 * 60,
+        secret: process.env.ACCESS_TOKEN_SECRET,
+      });
+
       await userData.save();
-      console.log('Login Successful');
-      return res.status(200).send({ accessToken })
+      return res.status(200).send({ accessToken });
+
     }
   } catch (error) {
-    return errorResponse(req, res, error.message, 400, { err: error });
+    return errorResponse('something went wrong!', 400, { err: error });
   }
 };
 
 const register = async (req, res) => {
   try {
+    const addinguserRecords = new user(req.body);
+    const emailID = req.body.emailID;
 
-      const addinguserRecords = new loginUser({
-        username: req.body.username,
-        phoneNumber: req.body.phoneNumber,
-        emailID: req.body.emailID,
-        password: req.body.password,
-        dob: req.body.dob,
-        gender: req.body.gender,
-        avatar: req.file.filename
-      })
+    // check if email id allready exist
+    const userData = await user.findOne({ emailID: emailID });
 
-      const emailID = req.body.emailID;
+    if (userData) {
+      return errorResponse('email id allready exist', 400);
+    } else {
 
-      // check if email id allready exist
-      const userData = await loginUser.findOne({ emailID: emailID });
-      if (userData) {
-        return errorResponse(req, res, 'email ID allready exist', 400);
-      }
-      else {
+      // register new user
+      const insert = await addinguserRecords.save();
+      console.log("Registration Successful");
 
-        // register new user
-        const insert = await addinguserRecords.save();
-        console.log('Registration Successful');
-        return successResponse(req, res, insert, 200);
-      }
-  } catch (e) {
-    return errorResponse(req, res, 'something went wrong', 400, { err: e });
-  }
-};
-
-const viewProfile = async (req, res) => {
-  try{
-
-    const userData = req.user;
-    console.log(req.user);
-    // check if data is exist or not
-    if(!userData){
-      return errorResponse(req, res, 'User Not Found', 404);
-    } else{
-      return successResponse(req, res, userData, 200);
+      return successResponse(req, res, insert, 200);
     }
-  } catch (error) {
-    return errorResponse(req, res, error.message, error, 500);
+  } catch (e) {
+    return errorResponse(req, res, "something went wrong", 400, { err: e });
   }
 };
 
+const logout = async (req, res) => {
+  res.send("Hello World!");
+};
 
-module.exports = {  login, register, viewProfile };
+module.exports = { login, register, logout };

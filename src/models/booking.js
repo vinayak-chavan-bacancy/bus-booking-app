@@ -20,7 +20,7 @@ const bookingSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  booking_date: {
+  bookingDate: {
     type: String,
     required: true,
     trim: true,

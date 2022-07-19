@@ -29,7 +29,7 @@ const travelScheduleSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  fare_amount: {
+  fareAmount: {
     type: String,
     required: true,
     trim: true,
