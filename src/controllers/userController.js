@@ -11,16 +11,16 @@ const login = async (req, res) => {
 
     const emailID = req.body.emailID;
     const password = req.body.password;
-    console.log('body' + req.body);
+
     // check for email exist or not
     const userData = await user.findOne({ emailID: emailID });
     if (!userData) {
       return errorResponse(req, res, 'Invalid credentials!', 404);
     }
-    console.log('userData' + userData);
+
     // check for the password
     const isMatch = await bcrypt.compare(password, userData.password);
-    console.log("isMatch" + isMatch);
+
     if (!isMatch) {
       return errorResponse(req, res, 'Invalid credentials!', 404);
     } else {
@@ -30,7 +30,7 @@ const login = async (req, res) => {
         exp: 60 * 60,
         secret: process.env.ACCESS_TOKEN_SECRET,
       });
-      console.log(accessToken);
+
       await userData.save();
       return successResponse(req, res, accessToken, 200);
     }
@@ -57,8 +57,8 @@ const register = async (req, res) => {
         phoneno,
         emailID,
         password,
-        wallet: 0,
-        role: 'admin',
+        wallet: 1000,
+        role: 'user',
       };
 
       // register new user
