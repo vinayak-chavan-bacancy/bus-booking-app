@@ -3,8 +3,8 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
-const user = require("../models/user");
-const { successResponse, errorResponse } = require("../utils");
+const user = require('../../models/user');
+const { successResponse, errorResponse } = require('../../utils');
 
 const login = async (req, res) => {
   try {
@@ -65,12 +65,12 @@ const register = async (req, res) => {
       const newUser = new user(payload);
       const insertUser = await newUser.save();
 
-      console.log("Registration Successful");
+      console.log('Registration Successful');
 
       return successResponse(req, res, insertUser, 200);
     }
   } catch (error) {
-    return errorResponse(req, res, "something went wrong", 400 );
+    return errorResponse(req, res, 'something went wrong', 400 );
   }
 };
 
