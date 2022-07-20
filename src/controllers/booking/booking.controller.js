@@ -21,6 +21,7 @@ const addBooking = async (req, res) => {
     let requestSeatsArray = requestedSeats;
     let availableSeatsArray = tripData.availableSeats;
     
+    // check if requested seats available or not
     const containsAll = availableSeatsArray.every((element) => {
       return requestSeatsArray.includes(element);
     });
@@ -61,6 +62,7 @@ const addBooking = async (req, res) => {
 
     availableSeatsArray = availableSeatsArray.filter((val) => !requestSeatsArray.includes(val));
 
+    // removing booked seats from available seats array
     const updatedTripData = await travelSchedule.findByIdAndUpdate(
       { _id: tripId },
       { availableSeats: availableSeatsArray }
@@ -122,11 +124,17 @@ const cancelBooking = async (req, res) => {
 
     let value = bookingData.totalAmount;
     let userId = bookingData.userId;
+    let seats = bookingData.bookedSeats;
+    let tripId = bookingData.travelScheduleId;
 
     // updating booking status to cancel
-    const cancelBookingData = await booking.findByIdAndUpdate({_id: id}, {
-      status: status
-    });
+    const cancelBookingData = await booking.findByIdAndUpdate(
+      { _id: id },
+      {
+        status: status,
+        bookedSeats: [],
+      }
+    );
 
     if(!cancelBookingData){
       return errorResponse(req, res, "something went wrong", 400);
@@ -137,6 +145,16 @@ const cancelBooking = async (req, res) => {
         { _id: userId },
         { $inc: { wallet: value } }
       );
+
+      // adding booked seats to available seats
+      const trip = await travelSchedule.findOne({ _id: tripId });
+      let availableSeatsArray = trip.availableSeats;
+      availableSeatsArray.push(...seats); 
+
+      const tripData = await travelSchedule.findByIdAndUpdate(
+        { _id: tripId },
+        {availableSeats: availableSeatsArray}
+        )
     }
     
     return successResponse(req, res, cancelBookingData, 200);
