@@ -78,8 +78,27 @@ const loginView = async (req, res) => {
   res.render('login');
 };
 
+const viewProfile = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userData = await user.findOne({ _id: id });
+
+    // check if data is exist or not
+    if (!userData) {
+      return errorResponse(req, res, "User Not Found", 404);
+    } else {
+      return successResponse(req, res, userData, 200);
+    }
+  } catch (error) {
+    console.log(error.message);
+    return errorResponse(req, res, "something went wrong", 400);
+  }
+};
+
 const logout = async (req, res) => {
   
 };
 
-module.exports = { login, register, logout, loginView };
+
+
+module.exports = { login, register, logout, loginView, viewProfile };

@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const ObjectId = mongoose.Types.ObjectId;
 
 const user = require("../../models/user");
 const bus = require("../../models/bus");
