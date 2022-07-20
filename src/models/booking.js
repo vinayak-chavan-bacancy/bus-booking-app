@@ -29,6 +29,10 @@ const bookingSchema = new mongoose.Schema({
     enum: ["Confirmed", "Canceled"],
     trim: true,
   },
+  bookedSeats: {
+    type: [],
+    require: true,
+  }
 });
 
 const booking = new mongoose.model('booking', bookingSchema);

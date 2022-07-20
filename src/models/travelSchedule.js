@@ -40,6 +40,10 @@ const travelScheduleSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  availableSeats: {
+    type: [],
+    required: true,
+  },
 });
 
 const travelSchedule = new mongoose.model("travelSchedule", travelScheduleSchema);
