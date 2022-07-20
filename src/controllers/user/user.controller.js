@@ -95,8 +95,32 @@ const viewProfile = async (req, res) => {
   }
 };
 
+const viewUserByAdmin = async (req, res) => {
+  try {
+    let role = 'user';
+    const userData = await user.find({ role: role });
+
+    // check if data is exist or not
+    if (!userData) {
+      return errorResponse(req, res, "Users Not Found", 404);
+    } else {
+      return successResponse(req, res, userData, 200);
+    }
+  } catch (error) {
+    console.log(error.message);
+    return errorResponse(req, res, "something went wrong", 400);
+  }
+};
+
 const logout = async (req, res) => {
   
 };
 
-module.exports = { login, register, logout, loginView, viewProfile };
+module.exports = {
+  login,
+  register,
+  logout,
+  loginView,
+  viewProfile,
+  viewUserByAdmin,
+};
