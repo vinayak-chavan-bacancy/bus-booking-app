@@ -6,6 +6,12 @@ const busSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  busType: {
+    type: String,
+    required: true,
+    enum: ['seating', 'sleeper'],
+    trim: true,
+  },
   capacity: {
     type: Number,
     required: true,
