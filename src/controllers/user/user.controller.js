@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const alert = require('alert');
 
 const user = require('../../models/user');
 const { successResponse, errorResponse } = require('../../utils');
@@ -22,7 +23,8 @@ const login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, userData.password);
 
     if (!isMatch) {
-      return errorResponse(req, res, 'Invalid credentials!', 404);
+      res.render("login");
+      // return errorResponse(req, res, 'Invalid credentials!', 404);
     } else {
 
       // jwt token created
@@ -32,7 +34,8 @@ const login = async (req, res) => {
       });
 
       await userData.save();
-      return successResponse(req, res, accessToken, 200);
+      res.redirect('bus');
+      // return successResponse(req, res, accessToken, 200);
     }
   } catch (error) {
     console.log(error.message)
@@ -66,8 +69,8 @@ const register = async (req, res) => {
       const insertUser = await newUser.save();
 
       console.log('Registration Successful');
-
-      return successResponse(req, res, insertUser, 200);
+      res.render("login");
+      // return successResponse(req, res, insertUser, 200);
     }
   } catch (error) {
     return errorResponse(req, res, 'something went wrong', 400 );
