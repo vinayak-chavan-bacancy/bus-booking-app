@@ -10,14 +10,25 @@ const { successResponse, errorResponse } = require("../../utils");
 const addBooking = async (req, res) => {
   try {
     const { tripId } = req.params;
-    const { userId, seats, totalAmount} = req.body;
+    const { userId, seats, totalAmount, requestedSeats } = req.body;
     let status = 'Confirmed';
 
     // check if trip exist or not
-    const tripData = await travelSchedule.find({ _id: tripId });
+    const tripData = await travelSchedule.findOne({ _id: tripId });
     if (!tripData) 
       return errorResponse(req, res, "trip not found", 404);
+
+    let requestSeatsArray = requestedSeats;
+    let availableSeatsArray = tripData.availableSeats;
     
+    const containsAll = availableSeatsArray.every((element) => {
+      return requestSeatsArray.includes(element);
+    });
+
+    if(!containsAll) {
+      return errorResponse(req, res, "seats already occupied", 500);
+    }
+
     // creating payload
     const payload = {
       userId,
@@ -25,7 +36,8 @@ const addBooking = async (req, res) => {
       seats,
       totalAmount,
       bookingDate: new Date().toISOString().slice(0, 10),
-      status: status
+      status: status,
+      bookedSeats: requestSeatsArray,
     };
 
     // debiting booking amount from user wallet
@@ -47,7 +59,12 @@ const addBooking = async (req, res) => {
     const newBooking = new booking(payload);
     const insertBooking = await newBooking.save();
 
-    console.log("booking successfully");
+    availableSeatsArray = availableSeatsArray.filter((val) => !requestSeatsArray.includes(val));
+
+    const updatedTripData = await travelSchedule.findByIdAndUpdate(
+      { _id: tripId },
+      { availableSeats: availableSeatsArray }
+    );
 
     return successResponse(req, res, insertBooking, 200);
   } catch (error) {

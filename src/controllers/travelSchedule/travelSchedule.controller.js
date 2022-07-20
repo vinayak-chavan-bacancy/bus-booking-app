@@ -8,12 +8,16 @@ const { successResponse, errorResponse } = require("../../utils");
 const addSchedule = async (req, res) => {
   try {
     const { busId } = req.params;
-
+    
     // check if bus exist or not
     const busData = await bus.findOne({ _id: busId });
     if (!busData) {
       return errorResponse(req, res, "bus not found", 404);
     }
+
+    // check for bus capacity
+    let number = busData.capacity;
+    const availableSeats = Array.from({ length: number }, (_, index) => index + 1);
 
     // creating payload
     const payload = {
@@ -25,6 +29,7 @@ const addSchedule = async (req, res) => {
       reachTime: req.body.reachTime,
       fareAmount: req.body.fareAmount,
       totalBooking: 0,
+      availableSeats: availableSeats,
     };
 
     // adding new travel schedule

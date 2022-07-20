@@ -42,7 +42,6 @@ const travelScheduleSchema = new mongoose.Schema({
   },
   availableSeats: {
     type: [],
-    required: true,
   },
 });
 
