@@ -1,4 +1,5 @@
 const express = require('express');
+const { tripValidation } = require('../controllers/travelSchedule/travelSchedule.validation');
 
 const {
   addSchedule,
@@ -10,7 +11,7 @@ const {
 const route = express.Router();
 
 // routes for admin
-route.post("/trip/:busId", addSchedule);
+route.post("/trip/:busId", tripValidation, addSchedule);
 route.get("/trip/:busId", viewSchedule);
 route.delete('/trip/:id', deleteSchedule);
 

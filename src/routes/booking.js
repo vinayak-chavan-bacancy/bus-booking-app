@@ -1,4 +1,5 @@
 const express = require('express');
+const { bookingValidation } = require("../controllers/booking/booking.validation");
 
 const {
   addBooking, cancelBooking, viewBookingByUser, viewBookingByTrip
@@ -7,7 +8,7 @@ const {
 const route = express.Router();
 
 // user routes
-route.post('/booking/:tripId', addBooking);
+route.post('/booking/:tripId', bookingValidation, addBooking);
 route.put('/booking/:id', cancelBooking);
 route.get('/mybooking/:userId', viewBookingByUser);
 

@@ -48,7 +48,7 @@ const register = async (req, res) => {
     const userData = await user.findOne({ emailID: emailID });
 
     if (userData) {
-      return errorResponse('email id allready exist', 400);
+      return errorResponse(req, res, 'email id allready exist', 400);
     } else {
 
       // creating payload
@@ -98,7 +98,5 @@ const viewProfile = async (req, res) => {
 const logout = async (req, res) => {
   
 };
-
-
 
 module.exports = { login, register, logout, loginView, viewProfile };
