@@ -104,13 +104,28 @@ const cancelBooking = async (req, res) => {
       return errorResponse(req, res, "data not found", 404);
     }
 
+    let value = bookingData.totalAmount;
+    let userId = bookingData.userId;
+
     // updating booking status to cancel
     const cancelBookingData = await booking.findByIdAndUpdate({_id: id}, {
       status: status
     });
 
+    if(!cancelBookingData){
+      return errorResponse(req, res, "something went wrong", 400);
+    } else {
+
+      // updating user wallet amount for refund
+      const userData = await user.findByIdAndUpdate(
+        { _id: userId },
+        { $inc: { wallet: value } }
+      );
+    }
+    
     return successResponse(req, res, cancelBookingData, 200);
   } catch (error) {
+    console.log(error.message);
     return errorResponse(req, res, "something went wrong", 400, { err: error });
   }
 };
