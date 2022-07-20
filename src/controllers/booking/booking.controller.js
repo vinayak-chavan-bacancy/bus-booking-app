@@ -11,6 +11,7 @@ const { successResponse, errorResponse } = require("../../utils");
 const addBooking = async (req, res) => {
   try {
     const { tripId } = req.params;
+    const { userId, seats, totalAmount} = req.body;
     let status = 'Confirmed';
 
     // check if trip exist or not
@@ -20,14 +21,29 @@ const addBooking = async (req, res) => {
     
     // creating payload
     const payload = {
-      userId: req.body.userId,
+      userId,
       travelScheduleId: tripId,
-      seats: req.body.seats,
-      totalAmount: req.body.totalAmount,
+      seats,
+      totalAmount,
       bookingDate: new Date().toISOString().slice(0, 10),
       status: status
     };
 
+    // debiting booking amount from user wallet
+    const userInfo = await user.findOne({ _id: userId });
+    let value = userInfo.wallet
+
+    // check if you have sufficient wallet balance to pay
+    if (value < totalAmount){
+      return errorResponse(req, res, "dont have sufficeint wallet balance", 500 );
+
+    } else {
+
+      // deducting amount from user wallet
+      const userData = await user.findOneAndUpdate({ _id: userId }, {
+        wallet: value - totalAmount
+      });
+    }
     // adding booking data
     const newBooking = new booking(payload);
     const insertBooking = await newBooking.save();
@@ -36,7 +52,8 @@ const addBooking = async (req, res) => {
 
     return successResponse(req, res, insertBooking, 200);
   } catch (error) {
-    return errorResponse(req, res, "something went wrong", 500, { err: error });
+      console.log(error.message);
+      return errorResponse(req, res, "something went wrong", 500, { err: error });
   }
 };
 
