@@ -37,10 +37,15 @@ const addBus = async (req, res) => {
     const newbus = new bus(payload);
     const insertBus = await newbus.save();
 
-    return successResponse(req, res, insertBus, 200);
+    res.redirect('bus');
+    // return successResponse(req, res, insertBus, 200);
   } catch (error) {
     return errorResponse(req, res, 'something went wrong', 500, { err: error });
   }
+};
+
+const addBusView = async (req, res) => {
+  res.render("addBus");
 };
 
 const deleteBus = async (req, res) => {
@@ -62,4 +67,4 @@ const deleteBus = async (req, res) => {
   }
 };
 
-module.exports = { viewBus, addBus, deleteBus };
+module.exports = { viewBus, addBus, deleteBus, addBusView };
