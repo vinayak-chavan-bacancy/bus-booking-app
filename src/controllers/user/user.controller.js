@@ -107,10 +107,10 @@ const viewUserByAdmin = async (req, res) => {
     if (!userData) {
       return errorResponse(req, res, "Users Not Found", 404);
     } else {
-      return successResponse(req, res, userData, 200);
+      res.render("viewUsers", { users: userData });
+      // return successResponse(req, res, userData, 200);
     }
   } catch (error) {
-    console.log(error.message);
     return errorResponse(req, res, "something went wrong", 400);
   }
 };
