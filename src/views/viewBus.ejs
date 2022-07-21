@@ -47,13 +47,15 @@
             <div class="row p-3">
               <div class="col-10 align-middle"> 
 
-                <h4> <%= bus.busnumber %> </h4>            
+                <h5> <%= bus.busnumber %> </h5>            
                   Type : <%= bus.busType %> <br>             
                   Capacity : <%= bus.capacity %> <br>
 
               </div>
               <div class="col-2">
-                <button type="button" class="btn btn-danger btn-block">View Trips</button>
+                <!-- <button type="button" class="btn btn-danger btn-block">View Trips</button> -->
+                
+                <a href="/trip/<%= bus._id %>" class="btn btn-danger btn-block" >View Trips</a>
               </div>
             </div>
           </div>

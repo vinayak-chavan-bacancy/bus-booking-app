@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { difference } = require('lodash');
 
 const user = require("../../models/user");
 const bus = require("../../models/bus");
@@ -12,7 +13,7 @@ const addBooking = async (req, res) => {
     const { tripId } = req.params;
     const { userId, seats, totalAmount, requestedSeats } = req.body;
     let status = 'Confirmed';
-
+    
     // check if trip exist or not
     const tripData = await travelSchedule.findOne({ _id: tripId });
     if (!tripData) 
@@ -20,13 +21,12 @@ const addBooking = async (req, res) => {
 
     let requestSeatsArray = requestedSeats;
     let availableSeatsArray = tripData.availableSeats;
-    
-    // check if requested seats available or not
-    const containsAll = availableSeatsArray.every((element) => {
-      return requestSeatsArray.includes(element);
-    });
+    let busId = tripData.busId
 
-    if(!containsAll) {
+    // check if requested seats available or not
+ 
+    const diffArr = difference(requestSeatsArray, availableSeatsArray);
+    if(diffArr.length) {
       return errorResponse(req, res, "seats already occupied", 500);
     }
 
@@ -62,10 +62,14 @@ const addBooking = async (req, res) => {
 
     availableSeatsArray = availableSeatsArray.filter((val) => !requestSeatsArray.includes(val));
 
+    // counting total bookings
+    const busData = await bus.findOne({ _id: busId });
+    let totalBooking = busData.capacity - availableSeatsArray.length;
+
     // removing booked seats from available seats array
     const updatedTripData = await travelSchedule.findByIdAndUpdate(
       { _id: tripId },
-      { availableSeats: availableSeatsArray }
+      { availableSeats: availableSeatsArray, totalBooking: totalBooking }
     );
 
     return successResponse(req, res, insertBooking, 200);
@@ -126,6 +130,7 @@ const cancelBooking = async (req, res) => {
     let userId = bookingData.userId;
     let seats = bookingData.bookedSeats;
     let tripId = bookingData.travelScheduleId;
+    let numberOfSeats = bookingData.seats;
 
     // updating booking status to cancel
     const cancelBookingData = await booking.findByIdAndUpdate(
@@ -146,14 +151,17 @@ const cancelBooking = async (req, res) => {
         { $inc: { wallet: value } }
       );
 
-      // adding booked seats to available seats
+      // updating booked seats to available seats
       const trip = await travelSchedule.findOne({ _id: tripId });
       let availableSeatsArray = trip.availableSeats;
       availableSeatsArray.push(...seats); 
+      
+      // updating total booking count
+      let totalBooking = trip.totalBooking - numberOfSeats;
 
       const tripData = await travelSchedule.findByIdAndUpdate(
         { _id: tripId },
-        {availableSeats: availableSeatsArray}
+        {availableSeats: availableSeatsArray, totalBooking: totalBooking}
         )
     }
     
