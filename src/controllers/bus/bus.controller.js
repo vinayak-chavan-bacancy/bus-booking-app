@@ -12,7 +12,8 @@ const viewBus = async (req, res) => {
     if (!busData) {
       return errorResponse(req, res, 'bus Not Found', 404);
     } else {
-      return successResponse(req, res, busData, 200);
+      res.render("viewBus", { buses: busData });
+      // return successResponse(req, res, busData, 200);
     }
 
   } catch (error) {

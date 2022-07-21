@@ -2,7 +2,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const alert = require('alert');
 
 const user = require('../../models/user');
 const { successResponse, errorResponse } = require('../../utils');
@@ -24,6 +23,7 @@ const login = async (req, res) => {
 
     if (!isMatch) {
       res.render("login");
+      
       // return errorResponse(req, res, 'Invalid credentials!', 404);
     } else {
 
