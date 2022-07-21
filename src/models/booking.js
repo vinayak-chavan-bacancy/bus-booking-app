@@ -4,6 +4,7 @@ const Schema = require("mongoose");
 const bookingSchema = new mongoose.Schema({
   userId: {
     type: Schema.Types.ObjectId,
+    ref: 'user',
   },
   travelScheduleId: {
     type: Schema.Types.ObjectId,

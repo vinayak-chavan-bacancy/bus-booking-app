@@ -39,35 +39,67 @@
 
                     <!-- page content -->
 
-    <div class="main-wrapper mt-0">
+
+    <% function formatDate(dateObject) { 
+      let d=new Date(dateObject); 
+      let day=d.getDate(); 
+      let month=d.getMonth() + 1; 
+      let year=d.getFullYear();
+      if (day < 10) { 
+        day="0" + day; 
+      } 
+      if (month < 10) { 
+        month="0" + month; 
+      }
+      let date=year + "-" + month + "-" + day; return date; 
+    };%>
+    <section class="pt-3 justify-content-center position-relative ">
+           
+          <div class="container">
+              
+                <div class="row justify-content-center">
+                    <% bookings.forEach(booking=> { %>
+                        <div class="card mt-4">
+                            <div class="card-body">
+                              <p><b><%= booking.userId.username %></b></p>            
+                              Seats: <%= booking.seats %> <br>
+                              Seat No: <%= booking.bookedSeats %> <br>
+                              Amount Paid: <%= booking.totalAmount%> <br>
+                              Booking Date: <%= formatDate(booking.bookingDate) %>  <br>
+                              </div>
+                          </div>
+                    <% }) %>
+                  </div>
+                    
+                </div>
+                
+            </div>
+            
+        </section>
+    <!-- <div class="main-wrapper mt-0">
       <div class="container main-container">
-        <% trips.forEach(trip=> { %>
+        <% bookings.forEach(booking=> { %>
         <div class="row main-row mt-4">
           <div class="col-12 align-center">
             <div class="row p-3">
               <div class="col-5 align-middle"> 
 
-                <h5> <%= trip.travelDate %> </h5>            
-                Price : <%= trip.fareAmount %> <br>
-                Total Bookings: <%= trip.totalBooking %>
+                 <%= booking.userId.username %><br>            
+                <%= booking.seats %> <br>
+                <%= booking.totalAmount%><br>
+                <%= booking.bookingDate %> <br>
+                <%= booking.bookedSeats %><br>
               </div>
 
-              <div class="col-5 align-middle mt-4"> 
-              <h6><%= trip.startingPoint %> - <%= trip.destinationPoint %></h6>
-                <%= trip.departureTime %> -  <%= trip.reachTime %> <br>
-              </div>
+              
 
-              <div class="col-2 mt-3">
-                
-                <a href="/booking/<%= trip._id %>" class="btn btn-danger btn-block" >View Bookings</a>
-              </div>
             </div>
           </div>
         </div>
         <% }) %>
       </div>
     </div>
-  </div>
+  </div> -->
 
     <%- include('../views/partials/footer'); %>
 

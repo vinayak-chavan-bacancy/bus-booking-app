@@ -101,13 +101,16 @@ const viewBookingByTrip = async (req, res) => {
     const { tripId } = req.params;
     let status = 'Confirmed';
 
-    const bookingData = await booking.find({travelScheduleId: tripId, status: status });
+    const bookingData = await booking
+      .find({ travelScheduleId: tripId, status: status })
+      .populate('userId', 'username');
 
     // check if booking is exist or not
     if (!bookingData) {
       return errorResponse(req, res, "no any data to show", 404);
     } else {
-      return successResponse(req, res, bookingData, 200);
+      res.render("viewBookings", { bookings: bookingData });
+      // return successResponse(req, res, bookingData, 200);
     }
   } catch (error) {
     console.log(error.message);
@@ -163,6 +166,7 @@ const cancelBooking = async (req, res) => {
         { _id: tripId },
         {availableSeats: availableSeatsArray, totalBooking: totalBooking}
         )
+        console.log(tripData);
     }
     
     return successResponse(req, res, cancelBookingData, 200);
