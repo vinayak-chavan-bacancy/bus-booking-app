@@ -5,12 +5,13 @@ const bus = require("../../models/bus");
 
 const { successResponse, errorResponse } = require("../../utils");
 
+let  busID;
+
 const addSchedule = async (req, res) => {
   try {
-    const { busId } = req.params;
     
     // check if bus exist or not
-    const busData = await bus.findOne({ _id: busId });
+    const busData = await bus.findOne({ _id: busID });
     if (!busData) {
       return errorResponse(req, res, "bus not found", 404);
     }
@@ -21,7 +22,7 @@ const addSchedule = async (req, res) => {
 
     // creating payload
     const payload = {
-      busId: busId,
+      busId: busID,
       startingPoint: req.body.startingPoint,
       destinationPoint: req.body.destinationPoint,
       travelDate: req.body.travelDate,
@@ -36,9 +37,8 @@ const addSchedule = async (req, res) => {
     const newTrip = new travelSchedule(payload);
     const insertTrip = await newTrip.save();
 
-    console.log("trip added successfully");
-
-    return successResponse(req, res, insertTrip, 200);
+    res.redirect("bus");
+    // return successResponse(req, res, insertTrip, 200);
   } catch (error) {
     console.log(error.message);
     return errorResponse(req, res, "something went wrong", 500, { err: error });
@@ -110,4 +110,10 @@ const SearchSchedule = async (req, res) => {
   }
 };
 
-module.exports = { addSchedule, viewSchedule, deleteSchedule, SearchSchedule };
+const addTripView = async (req, res) => {
+  let { busId } = req.params;
+  busID = busId
+  res.render("addTrip");
+}
+
+module.exports = { addSchedule, viewSchedule, deleteSchedule, SearchSchedule, addTripView };

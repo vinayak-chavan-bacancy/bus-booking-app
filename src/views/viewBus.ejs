@@ -45,17 +45,20 @@
         <div class="row main-row mt-4">
           <div class="col-12 align-center">
             <div class="row p-3">
-              <div class="col-10 align-middle"> 
+              <div class="col-8 align-middle"> 
 
                 <h5> <%= bus.busnumber %> </h5>            
                   Type : <%= bus.busType %> <br>             
                   Capacity : <%= bus.capacity %> <br>
 
               </div>
-              <div class="col-2">
+              <div class="col-2 mt-3">
                 <!-- <button type="button" class="btn btn-danger btn-block">View Trips</button> -->
-                
                 <a href="/trip/<%= bus._id %>" class="btn btn-danger btn-block" >View Trips</a>
+                
+              </div>
+            <div class="col-2 mt-3">
+              <a href="/trips/<%= bus._id %>" class="btn btn-danger btn-block" >Add Trip</a>
               </div>
             </div>
           </div>

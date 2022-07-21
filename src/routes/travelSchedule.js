@@ -6,13 +6,15 @@ const {
   viewSchedule,
   deleteSchedule,
   SearchSchedule,
+  addTripView,
 } = require("../controllers/travelSchedule/travelSchedule.controller");
 
 const route = express.Router();
 
 // routes for admin
-route.post("/trip/:busId", tripValidation, addSchedule);
+route.post("/trip", tripValidation, addSchedule);
 route.get("/trip/:busId", viewSchedule);
+route.get("/trips/:busId", addTripView)
 route.delete('/trip/:id', deleteSchedule);
 
 //routes for user
