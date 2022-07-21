@@ -80,7 +80,8 @@ const viewSchedule = async (req, res) => {
     if (!tripData) {
       return errorResponse(req, res, "no trip schedule", 404);
     } else {
-      return successResponse(req, res, tripData, 200);
+      res.render("viewTrips", { trips: tripData });
+      // return successResponse(req, res, tripData, 200);
     }
   } catch (error) {
     return errorResponse(req, res, "something went wrong", 400, { err: error });

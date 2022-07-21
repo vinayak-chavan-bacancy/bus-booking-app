@@ -1,0 +1,76 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="/css/blogcss.css" />
+    
+    <%- include('../views/partials/links'); %>  
+   
+</head>
+
+<body>
+
+                <!-- header part -->
+
+  <div class="bgimg">
+    <nav class="navbar navbar-expand-sm bg-danger nav-dark">
+        <div class="container mt-1">
+            <h2 class="text-white">Red<b>BUS</b></h2>
+            <button class="navbar-toggler btn btn-secondary" type="button" data-toggle="collapse"
+                data-target="#collapsenavbar">
+                <span class="navbar-toggler-icon "></span>
+            </button>
+
+            <div class="collapse navbar-collapse text-center" id="collapsenavbar">
+                <ul class="navbar-nav ml-auto">
+                  <li class="nav-item px-2">
+                        <a href="/bus" class="nav-link text-white"> VIEW BUS </a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a href="/users" class="nav-link text-white"> USERS </a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a href="/" class="nav-link text-white"> LOGOUT </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+                    <!-- page content -->
+
+    <div class="main-wrapper mt-0">
+      <div class="container main-container">
+        <% trips.forEach(trip=> { %>
+        <div class="row main-row mt-4">
+          <div class="col-12 align-center">
+            <div class="row p-3">
+              <div class="col-5 align-middle"> 
+
+                <h5> <%= trip.travelDate %> </h5>            
+                Price : <%= trip.fareAmount %> <br>
+                Total Bookings: <%= trip.totalBooking %>
+              </div>
+
+              <div class="col-5 align-middle mt-4"> 
+              <h6><%= trip.startingPoint %> - <%= trip.destinationPoint %></h6>
+                <%= trip.departureTime %> -  <%= trip.reachTime %> <br>
+              </div>
+
+              <div class="col-2">
+                
+                <a href="/booking/<%= trip._id %>" class="btn btn-danger btn-block" >View Bookings</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+
+    <%- include('../views/partials/footer'); %>
+
+</body>
+
+</html>
