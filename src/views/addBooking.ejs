@@ -49,33 +49,34 @@
       }
       let date=year + "-" + month + "-" + day; return date; 
     };%>
+  
 
-    <div class="main-wrapper mt-0">
-      <div class="container main-container">
-        
-        <div class="row main-row mt-4">
-          <div class="col-12 align-center">
-            <div class="row p-3">
-              <div class="col-6 align-middle"> 
-
+  <div class="container mt-1">
+    <div class="d-flex justify-content-center">
+      <div class="mt-2 col-md-7">
+        <div class="row main-row-col mt-4">
+          <div class="container ">
+            <div class="row mx-md-n2">
+              <div class="col px-md-2 ml-3">
                 <h5> <%= formatDate(trip.travelDate) %> </h5>            
-                Price : <%= trip.fareAmount %> <br>
-                Available Seats : <%= trip.availableSeats.length %>
+                      Price : <%= trip.fareAmount %> <br>
+                      Available Seats : <%= trip.availableSeats.length %> 
               </div>
-
-              <div class="col-6 align-middle mt-4"> 
-              <h6><%= trip.startingPoint %> - <%= trip.destinationPoint %></h6>
-                <%= trip.departureTime %> -  <%= trip.reachTime %> <br>
-              </div>
+            <div class="col px-2 ml-3">
+              <br>
+              <h6> <%= trip.startingPoint %> - <%= trip.destinationPoint %></h6>
+                   <%= trip.departureTime %> -  <%= trip.reachTime %> <br>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="container mt-1">
+  </div>             
+
+  <div class="container mt-3">
             <div class="d-flex justify-content-center">
                 <form class="mt-1 col-md-6" id="addbus" action="/booking/<%= trip._id %>" method="post">
+
                     <div class="form-group">
                         <label for="seats">Number of Seats</label>
                         <input type="number" min=1 class="form-control" id="seats" name="seats" placeholder="Seats" onChange="myFunction()" required>

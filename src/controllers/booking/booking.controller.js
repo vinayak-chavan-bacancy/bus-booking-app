@@ -23,13 +23,10 @@ const addBooking = async (req, res) => {
 
     let requestSeatsArray = requestedSeats;
     let availableSeatsArray = tripData.availableSeats;
-    
     let busId = tripData.busId
 
     const finalReqArr = requestSeatsArray.map(ele => parseInt(ele));
 
-    console.log(availableSeatsArray);
-    console.log(finalReqArr)
     // check if requested seats available or not
  
     const diffArr = difference(finalReqArr, availableSeatsArray);

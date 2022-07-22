@@ -65,7 +65,7 @@ const register = async (req, res) => {
         phoneno,
         emailID,
         password,
-        wallet: 1000,
+        wallet: 3000,
         role: 'user',
       };
 

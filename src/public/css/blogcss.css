@@ -14,10 +14,18 @@
 }
 
 .row.main-row {
-  background-color: white;  
+  background-color: white;
+  padding: 10px;  
   margin: 10px; 
   border: 1px solid #000;
   border-radius: 10px
+}
+
+.row.main-row-col {
+  background-color: white;
+  padding: 10px;  
+  margin: 10px; 
+
 }
 
 .error{
