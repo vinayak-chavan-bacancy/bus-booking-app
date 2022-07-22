@@ -11,8 +11,9 @@ const { successResponse, errorResponse } = require("../../utils");
 const addBooking = async (req, res) => {
   try {
     const { tripId } = req.params;
-
-    const { userId, seats, totalAmount, requestedSeats } = req.body;
+    const userId = req.user._id;
+    
+    const { seats, totalAmount, requestedSeats } = req.body;
     let status = 'Confirmed';
     
     // check if trip exist or not
@@ -82,7 +83,7 @@ const addBooking = async (req, res) => {
 
 const viewBookingByUser = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const userId = req.user._id;
     let status = "Confirmed";
 
     const bookingData = await booking
