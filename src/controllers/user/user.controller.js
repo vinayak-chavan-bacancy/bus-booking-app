@@ -35,7 +35,11 @@ const login = async (req, res) => {
 
       res.cookie('accessToken', accessToken);
       await userData.save();
-      res.redirect('bus');
+
+      if (userData.role === "admin") 
+        res.redirect("/bus");
+      else
+        res.render("search");
       // return successResponse(req, res, accessToken, 200);
     }
   } catch (error) {
