@@ -82,14 +82,18 @@ const addBooking = async (req, res) => {
 const viewBookingByUser = async (req, res) => {
   try {
     const { userId } = req.params;
+    let status = "Confirmed";
 
-    const bookingData = await booking.find({userId: userId});
+    const bookingData = await booking
+      .find({ userId: userId, status: status })
+      .populate("travelScheduleId");
 
     // check if booking is exist or not
     if (!bookingData) {
       return errorResponse(req, res, "you dont have any booking yet", 404);
     } else {
-      return successResponse(req, res, bookingData, 200);
+      res.render("myBookings", { bookings: bookingData });
+      // return successResponse(req, res, bookingData, 200);
     }
   } catch (error) {
     return errorResponse(req, res, "something went wrong", 400, { err: error });
@@ -166,10 +170,12 @@ const cancelBooking = async (req, res) => {
         { _id: tripId },
         {availableSeats: availableSeatsArray, totalBooking: totalBooking}
         )
-        console.log(tripData);
     }
-    
-    return successResponse(req, res, cancelBookingData, 200);
+      const bookingDetails = await booking
+        .find({ userId: userId, status: { $ne: status } })
+        .populate("travelScheduleId");
+      res.render("myBookings", { bookings: bookingDetails });
+    // return successResponse(req, res, cancelBookingData, 200);
   } catch (error) {
     console.log(error.message);
     return errorResponse(req, res, "something went wrong", 400, { err: error });

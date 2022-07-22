@@ -4,10 +4,11 @@ const Schema = require("mongoose");
 const bookingSchema = new mongoose.Schema({
   userId: {
     type: Schema.Types.ObjectId,
-    ref: 'user',
+    ref: "user",
   },
   travelScheduleId: {
     type: Schema.Types.ObjectId,
+    ref: "travelSchedule",
   },
   seats: {
     type: Number,
@@ -33,7 +34,7 @@ const bookingSchema = new mongoose.Schema({
   bookedSeats: {
     type: [],
     require: true,
-  }
+  },
 });
 
 const booking = new mongoose.model('booking', bookingSchema);

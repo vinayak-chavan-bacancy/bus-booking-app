@@ -9,8 +9,8 @@ const route = express.Router();
 
 // user routes
 route.post('/booking/:tripId', bookingValidation, addBooking);
-route.put('/booking/:id', cancelBooking);
-route.get('/mybooking/:userId', viewBookingByUser);
+route.get('/cancel/:id', cancelBooking);
+route.get('/mybooking', viewBookingByUser);
 
 // admin routes
 route.get('/booking/:tripId', viewBookingByTrip);
