@@ -11,68 +11,70 @@ const { successResponse, errorResponse } = require("../../utils");
 const addBooking = async (req, res) => {
   try {
     const { tripId } = req.params;
-    const { userId, seats, totalAmount, requestedSeats } = req.body;
-    let status = 'Confirmed';
+    console.log(tripId);
+    console.log(req.body);
+    // const { userId, seats, totalAmount, requestedSeats } = req.body;
+    // let status = 'Confirmed';
     
-    // check if trip exist or not
-    const tripData = await travelSchedule.findOne({ _id: tripId });
-    if (!tripData) 
-      return errorResponse(req, res, "trip not found", 404);
+    // // check if trip exist or not
+    // const tripData = await travelSchedule.findOne({ _id: tripId });
+    // if (!tripData) 
+    //   return errorResponse(req, res, "trip not found", 404);
 
-    let requestSeatsArray = requestedSeats;
-    let availableSeatsArray = tripData.availableSeats;
-    let busId = tripData.busId
+    // let requestSeatsArray = requestedSeats;
+    // let availableSeatsArray = tripData.availableSeats;
+    // let busId = tripData.busId
 
-    // check if requested seats available or not
+    // // check if requested seats available or not
  
-    const diffArr = difference(requestSeatsArray, availableSeatsArray);
-    if(diffArr.length) {
-      return errorResponse(req, res, "seats already occupied", 500);
-    }
+    // const diffArr = difference(requestSeatsArray, availableSeatsArray);
+    // if(diffArr.length) {
+    //   return errorResponse(req, res, "seats already occupied", 500);
+    // }
 
-    // creating payload
-    const payload = {
-      userId,
-      travelScheduleId: tripId,
-      seats,
-      totalAmount,
-      bookingDate: new Date().toISOString().slice(0, 10),
-      status: status,
-      bookedSeats: requestSeatsArray,
-    };
+    // // creating payload
+    // const payload = {
+    //   userId,
+    //   travelScheduleId: tripId,
+    //   seats,
+    //   totalAmount,
+    //   bookingDate: new Date().toISOString().slice(0, 10),
+    //   status: status,
+    //   bookedSeats: requestSeatsArray,
+    // };
 
-    // debiting booking amount from user wallet
-    const userInfo = await user.findOne({ _id: userId });
-    let value = userInfo.wallet
+    // // debiting booking amount from user wallet
+    // const userInfo = await user.findOne({ _id: userId });
+    // let value = userInfo.wallet
 
-    // check if you have sufficient wallet balance to pay
-    if (value < totalAmount){
-      return errorResponse(req, res, "dont have sufficeint wallet balance", 500 );
+    // // check if you have sufficient wallet balance to pay
+    // if (value < totalAmount){
+    //   return errorResponse(req, res, "dont have sufficeint wallet balance", 500 );
 
-    } else {
+    // } else {
 
-      // deducting amount from user wallet
-      const userData = await user.findOneAndUpdate({ _id: userId }, {
-        wallet: value - totalAmount
-      });
-    }
-    // adding booking data
-    const newBooking = new booking(payload);
-    const insertBooking = await newBooking.save();
+    //   // deducting amount from user wallet
+    //   const userData = await user.findOneAndUpdate({ _id: userId }, {
+    //     wallet: value - totalAmount
+    //   });
+    // }
+    // // adding booking data
+    // const newBooking = new booking(payload);
+    // const insertBooking = await newBooking.save();
 
-    availableSeatsArray = availableSeatsArray.filter((val) => !requestSeatsArray.includes(val));
+    // availableSeatsArray = availableSeatsArray.filter((val) => !requestSeatsArray.includes(val));
 
-    // counting total bookings
-    const busData = await bus.findOne({ _id: busId });
-    let totalBooking = busData.capacity - availableSeatsArray.length;
+    // // counting total bookings
+    // const busData = await bus.findOne({ _id: busId });
+    // let totalBooking = busData.capacity - availableSeatsArray.length;
 
-    // removing booked seats from available seats array
-    const updatedTripData = await travelSchedule.findByIdAndUpdate(
-      { _id: tripId },
-      { availableSeats: availableSeatsArray, totalBooking: totalBooking }
-    );
+    // // removing booked seats from available seats array
+    // const updatedTripData = await travelSchedule.findByIdAndUpdate(
+    //   { _id: tripId },
+    //   { availableSeats: availableSeatsArray, totalBooking: totalBooking }
+    // );
 
-    return successResponse(req, res, insertBooking, 200);
+    // return successResponse(req, res, insertBooking, 200);
   } catch (error) {
       console.log(error.message);
       return errorResponse(req, res, "something went wrong", 500, { err: error });
@@ -182,9 +184,22 @@ const cancelBooking = async (req, res) => {
   }
 };
 
+const addBookingView = async (req, res) => {
+  try{
+    let { tripId } = req.params;
+
+    const tripData = await travelSchedule.findOne({ _id: tripId });
+    res.render('addBooking', {trip: tripData});
+
+  } catch (error){
+    return errorResponse(req, res, "something went wrong", 400, { err: error });
+  }
+}
+
 module.exports = {
   addBooking,
   cancelBooking,
   viewBookingByUser,
   viewBookingByTrip,
+  addBookingView,
 };
