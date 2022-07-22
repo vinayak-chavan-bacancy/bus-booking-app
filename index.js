@@ -2,6 +2,7 @@ require('./src/db/connection');
 const path = require('path');
 const dotenv = require('dotenv');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 
 const userRoutes = require('./src/routes/user');
 const busRoutes = require('./src/routes/bus');
@@ -18,6 +19,7 @@ app.use(express.json());
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src', 'views'));
 
+app.use(cookieParser());
 app.use('/', userRoutes);
 app.use('/', busRoutes);
 app.use('/', travelScheduleRoutes);

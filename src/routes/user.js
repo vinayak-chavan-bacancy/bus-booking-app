@@ -1,4 +1,5 @@
 const express = require("express");
+const { auth } = require('../middlewares/auth');
 const { userValidation } = require("../controllers/user/user.validation");
 
 const {
@@ -7,6 +8,7 @@ const {
   logout,
   loginView,
   viewProfile,
+  updateProfile,
   searchView,
   viewUserByAdmin,
 } = require("../controllers/user/user.controller");
@@ -17,7 +19,8 @@ route.get('/', loginView);
 route.post('/login', login);
 route.post('/register', userValidation, register);
 route.get('/logout', logout);
-route.get('/profile/:id', viewProfile);
+route.get('/profile', auth, viewProfile);
+route.post('/profile/:id', updateProfile);
 route.get('/users', viewUserByAdmin);
 route.get('/search', searchView);
 

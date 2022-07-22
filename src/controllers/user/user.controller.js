@@ -33,6 +33,7 @@ const login = async (req, res) => {
         secret: process.env.ACCESS_TOKEN_SECRET,
       });
 
+      res.cookie('accessToken', accessToken);
       await userData.save();
       res.redirect('bus');
       // return successResponse(req, res, accessToken, 200);
@@ -83,20 +84,47 @@ const loginView = async (req, res) => {
 
 const viewProfile = async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = req.user._id;
     const userData = await user.findOne({ _id: id });
 
     // check if data is exist or not
     if (!userData) {
       return errorResponse(req, res, "User Not Found", 404);
     } else {
-      return successResponse(req, res, userData, 200);
+      res.render("userProfile", { users: userData });
+      // return successResponse(req, res, userData, 200);
     }
   } catch (error) {
     console.log(error.message);
     return errorResponse(req, res, "something went wrong", 400);
   }
 };
+
+
+const updateProfile = async (req, res) => {
+  try {
+    let userId = req.params.id;
+
+    // updating user details
+    const updateDetails = await user.findByIdAndUpdate(userId, {
+      username: req.body.username,
+      phoneno: req.body.phoneno,
+    });
+
+    const userData = await user.findOne({ _id: userId });
+
+    if (!userData) {
+      return errorResponse(req, res, "User Not Found", 404);
+    } else {
+      res.render("userProfile", { users: userData });
+      // return successResponse(req, res, userData, 200);
+    }
+
+  } catch (error) {
+    console.log(error.message);
+    return errorResponse(req, res, "something went wrong", 400);
+  }
+}
 
 const searchView = async (req, res) => {
   res.render("search");
@@ -120,7 +148,12 @@ const viewUserByAdmin = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-  
+  try {
+    res.clearCookie("accessToken");
+    return res.redirect('/');
+  } catch (error) {
+    return errorResponse(req, res, 'Error while logging out', 500);
+  }
 };
 
 module.exports = {
@@ -130,5 +163,6 @@ module.exports = {
   loginView,
   searchView,
   viewProfile,
+  updateProfile,
   viewUserByAdmin,
 };
