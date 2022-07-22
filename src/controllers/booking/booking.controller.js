@@ -23,11 +23,18 @@ const addBooking = async (req, res) => {
 
     let requestSeatsArray = requestedSeats;
     let availableSeatsArray = tripData.availableSeats;
+    
     let busId = tripData.busId
 
+    const finalReqArr = requestSeatsArray.map(ele => parseInt(ele));
+
+    console.log(availableSeatsArray);
+    console.log(finalReqArr)
     // check if requested seats available or not
  
-    const diffArr = difference(requestSeatsArray, availableSeatsArray);
+    const diffArr = difference(finalReqArr, availableSeatsArray);
+
+
     if(diffArr.length) {
       return errorResponse(req, res, "seats already occupied", 500);
     }
@@ -40,7 +47,7 @@ const addBooking = async (req, res) => {
       totalAmount,
       bookingDate: new Date().toISOString().slice(0, 10),
       status: status,
-      bookedSeats: requestSeatsArray,
+      bookedSeats: finalReqArr,
     };
 
     // debiting booking amount from user wallet
@@ -62,7 +69,9 @@ const addBooking = async (req, res) => {
     const newBooking = new booking(payload);
     const insertBooking = await newBooking.save();
 
-    availableSeatsArray = availableSeatsArray.filter((val) => !requestSeatsArray.includes(val));
+    availableSeatsArray = availableSeatsArray.filter(
+      (val) => !finalReqArr.includes(val)
+    );
 
     // counting total bookings
     const busData = await bus.findOne({ _id: busId });
@@ -73,8 +82,8 @@ const addBooking = async (req, res) => {
       { _id: tripId },
       { availableSeats: availableSeatsArray, totalBooking: totalBooking }
     );
-
-    return successResponse(req, res, insertBooking, 200);
+    res.redirect('/mybooking');
+    // return successResponse(req, res, insertBooking, 200);
   } catch (error) {
       console.log(error.message);
       return errorResponse(req, res, "something went wrong", 500, { err: error });

@@ -17,7 +17,7 @@ const route = express.Router();
 
 route.get('/', loginView);
 route.post('/login', login);
-route.post('/register', auth, userValidation, register);
+route.post('/register', userValidation, register);
 route.get('/logout', logout);
 route.get('/profile', auth, viewProfile);
 route.post('/profile/:id', auth, updateProfile);

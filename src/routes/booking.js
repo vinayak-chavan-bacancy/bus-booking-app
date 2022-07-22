@@ -19,6 +19,6 @@ route.get('/mybooking', auth, viewBookingByUser);
 route.get('/booking/:tripId', auth, addBookingView);
 
 // admin routes
-route.get('/booking/:tripId', auth, viewBookingByTrip);
+route.get('/bookings/:tripId', auth, viewBookingByTrip);
 
 module.exports = route;
