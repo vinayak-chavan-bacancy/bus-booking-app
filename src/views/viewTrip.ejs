@@ -11,7 +11,7 @@
 
                 <!-- header part -->
 
-  <nav class="navbar navbar-expand-lg bg-danger navbar-light">
+<nav class="navbar navbar-expand-lg bg-danger navbar-light">
         <div class="container mt-1">
             <h2 class="text-white">Red<b>BUS</b></h2>
             <button class="navbar-toggler btn btn-secondary" type="button" data-toggle="collapse"
@@ -22,10 +22,10 @@
             <div class="collapse navbar-collapse text-center" id="collapsenavbar">
                 <ul class="navbar-nav ml-auto">
                   <li class="nav-item px-2">
-                        <a href="/bus" class="nav-link text-white"> VIEW BUS </a>
+                        <a href="/search" class="nav-link text-white"> HOME </a>
                     </li>
                     <li class="nav-item px-2">
-                        <a href="/users" class="nav-link text-white"> USERS </a>
+                        <a href="/users" class="nav-link text-white"> PROFILE </a>
                     </li>
                     <li class="nav-item px-2">
                         <a href="/" class="nav-link text-white"> LOGOUT </a>
@@ -37,7 +37,6 @@
 
 
                     <!-- page content -->
-
 
     <% function formatDate(dateObject) { 
       let d=new Date(dateObject); 
@@ -52,54 +51,36 @@
       }
       let date=year + "-" + month + "-" + day; return date; 
     };%>
-    
-    <section class="pt-3 justify-content-center position-relative ">
-           
-          <div class="container">
-              
-                <div class="row justify-content-center">
-                    <% bookings.forEach(booking=> { %>
-                        <div class="card mt-4">
-                            <div class="card-body">
-                              <p><b><%= booking.userId.username %></b></p>            
-                              Seats: <%= booking.seats %> <br>
-                              Seat No: <%= booking.bookedSeats %> <br>
-                              Amount Paid: <%= booking.totalAmount%> <br>
-                              Booking Date: <%= formatDate(booking.bookingDate) %>  <br>
-                              </div>
-                          </div>
-                    <% }) %>
-                  </div>
-                    
-                </div>
-                
-            </div>
-            
-        </section>
-    <!-- <div class="main-wrapper mt-0">
+
+    <div class="main-wrapper mt-0">
       <div class="container main-container">
-        <% bookings.forEach(booking=> { %>
+        <% trips.forEach(trip=> { %>
         <div class="row main-row mt-4">
           <div class="col-12 align-center">
             <div class="row p-3">
               <div class="col-5 align-middle"> 
 
-                 <%= booking.userId.username %><br>            
-                <%= booking.seats %> <br>
-                <%= booking.totalAmount%><br>
-                <%= booking.bookingDate %> <br>
-                <%= booking.bookedSeats %><br>
+                <h5> <%= formatDate(trip.travelDate) %> </h5>            
+                Price : <%= trip.fareAmount %> <br>
+                Available Seats : <%= trip.availableSeats.length %>
               </div>
 
-              
+              <div class="col-5 align-middle mt-4"> 
+              <h6><%= trip.startingPoint %> - <%= trip.destinationPoint %></h6>
+                <%= trip.departureTime %> -  <%= trip.reachTime %> <br>
+              </div>
 
+              <div class="col-2 mt-3">
+                
+                <a href="/booking/<%= trip._id %>" class="btn btn-danger btn-block" >Add Booking</a>
+              </div>
             </div>
           </div>
         </div>
         <% }) %>
       </div>
     </div>
-  </div> -->
+  </div>
 
     <%- include('../views/partials/footer'); %>
 

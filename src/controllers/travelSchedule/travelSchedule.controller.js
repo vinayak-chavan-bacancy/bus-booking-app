@@ -88,6 +88,12 @@ const viewSchedule = async (req, res) => {
   }
 };
 
+const addTripView = async (req, res) => {
+  let { busId } = req.params;
+  busID = busId;
+  res.render("addTrip");
+};
+
 const SearchSchedule = async (req, res) => {
   try {
     const { startingPoint, destinationPoint, travelDate } = req.body;
@@ -103,17 +109,14 @@ const SearchSchedule = async (req, res) => {
     if (!tripData) {
       return errorResponse(req, res, "no trip schedule", 404);
     } else {
-      return successResponse(req, res, tripData, 200);
+      
+      res.render("viewTrip", { trips: tripData });
+      // return successResponse(req, res, tripData, 200);
     }
   } catch (error) {
     return errorResponse(req, res, "something went wrong", 400, { err: error });
   }
 };
 
-const addTripView = async (req, res) => {
-  let { busId } = req.params;
-  busID = busId
-  res.render("addTrip");
-}
 
 module.exports = { addSchedule, viewSchedule, deleteSchedule, SearchSchedule, addTripView };

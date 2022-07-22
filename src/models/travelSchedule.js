@@ -16,7 +16,7 @@ const travelScheduleSchema = new mongoose.Schema({
     trim: true,
   },
   travelDate: {
-    type: String,
+    type: Date,
     required: true,
     trim: true,
   },

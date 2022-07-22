@@ -18,6 +18,6 @@ route.get("/trips/:busId", addTripView)
 route.delete('/trip/:id', deleteSchedule);
 
 //routes for user
-route.get("/schedule", SearchSchedule);
+route.post("/schedule", SearchSchedule);
 
 module.exports = route;

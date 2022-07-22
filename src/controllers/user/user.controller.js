@@ -98,6 +98,10 @@ const viewProfile = async (req, res) => {
   }
 };
 
+const searchView = async (req, res) => {
+  res.render("search");
+};
+
 const viewUserByAdmin = async (req, res) => {
   try {
     let role = 'user';
@@ -124,6 +128,7 @@ module.exports = {
   register,
   logout,
   loginView,
+  searchView,
   viewProfile,
   viewUserByAdmin,
 };

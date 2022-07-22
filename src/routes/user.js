@@ -7,6 +7,7 @@ const {
   logout,
   loginView,
   viewProfile,
+  searchView,
   viewUserByAdmin,
 } = require("../controllers/user/user.controller");
 
@@ -18,4 +19,6 @@ route.post('/register', userValidation, register);
 route.get('/logout', logout);
 route.get('/profile/:id', viewProfile);
 route.get('/users', viewUserByAdmin);
+route.get('/search', searchView);
+
 module.exports = route;
