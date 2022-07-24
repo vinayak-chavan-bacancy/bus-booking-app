@@ -2,6 +2,7 @@
 
 <head>
     <link rel="stylesheet" href="/css/blogcss.css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <%- include('../views/partials/links'); %>  
    
 </head>
@@ -36,7 +37,7 @@
 
                     <!-- page content -->
 <div class="container mt-4">
-    <h2 class="text-center">Add New Trip Here</h2>
+   
         <div class="d-flex justify-content-center">
             <form class="mt-3 col-md-6" id="addtrip" action="/trip" method="post">
                 <div class="form-group">
@@ -67,6 +68,24 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="form-group" id="intermediate">
+                     <div class="container ">
+                        <label for="id_label_multiple">Intermediate Stops</label>
+                         <select class="js-example-basic-multiple form-control" name="intermediate" id="id_label_multiple" multiple="multiple">
+                            <option class="element" value="Anand">Anand</option>
+                            <option class="element" value="Nadiad">Nadiad</option>
+                            <option class="element" value="Vadodara">Vadodara</option>
+                            <option class="element" value="Bharuch">Bharuch</option>
+                            <option class="element" value="Rajkot">Rajkot</option>
+                            <option class="element" value="Morbi">Morbi</option>
+                            <option class="element" value="Gandhinagar">Gandhinagar</option>
+                            <option class="element" value="Kutch">Kutch</option>
+                            <option class="element" value="Navsari">Navsari</option>
+                            <option class="element" value="Bhavnagar">Bhavnagar</option>
+                        </select>
+                    </div>
+                 </div>
                 <div class="form-group">
                     <div class="container ">
                         <label for="travelDate">Travel Date</label>
@@ -91,8 +110,14 @@
 </div>
 
     <%- include('../views/partials/footer'); %>
-
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
     <script>
+     $(".js-example-basic-multiple").select2({
+      width: 'resolve', // need to override the changed default
+      theme: 'classic'
+    });
+
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0');

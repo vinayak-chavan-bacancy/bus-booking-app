@@ -15,6 +15,9 @@ const travelScheduleSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  intermediate: {
+    type: [],
+  },
   travelDate: {
     type: Date,
     required: true,

@@ -85,7 +85,7 @@
                     <div class="form-group" id="availSeats">
                         <label for="id_label_multiple">Seats Numbers</label>
                          <select class="js-example-basic-multiple form-control" name="requestedSeats" id="id_label_multiple" multiple="multiple">
-                        <!-- <select class="form-control select" name="requestedSeats" multiple> -->
+                        
                         <%
                           trip.availableSeats.forEach((seat) => { %>
                             <option class="element" value="<%= seat %>"><%= seat %></option>

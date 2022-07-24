@@ -28,6 +28,7 @@ const addSchedule = async (req, res) => {
       travelDate: req.body.travelDate,
       departureTime: req.body.departureTime,
       reachTime: req.body.reachTime,
+      intermediate: req.body.intermediate,
       fareAmount: req.body.fareAmount,
       totalBooking: 0,
       availableSeats: availableSeats,
