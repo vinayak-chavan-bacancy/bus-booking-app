@@ -15,6 +15,6 @@ const route = express.Router();
 route.get("/bus", auth, isAdmin, viewBus);
 route.get("/addbus", auth, isAdmin, addBusView);
 route.post('/bus', busValidation, auth, isAdmin, addBus);
-route.delete('/bus/:id', auth, isAdmin, deleteBus);
+route.get('/deletebus/:id', auth, isAdmin, deleteBus);
 
 module.exports = route;

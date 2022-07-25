@@ -75,12 +75,11 @@
 
               </div>
               <div class="col-2 mt-3">
-                <!-- <button type="button" class="btn btn-danger btn-block">View Trips</button> -->
                 <a href="/trip/<%= bus._id %>" class="btn btn-danger btn-block" >View Trips</a>
-                
               </div>
-            <div class="col-2 mt-3">
-              <a href="/trips/<%= bus._id %>" class="btn btn-danger btn-block" >Add Trip</a>
+              <div class="col-2 mt-3">
+              <a href="/trips/<%= bus._id %>" class="btn btn-danger" >Add Trip</a>
+              <button class="btn btn-danger ml-2"> <a href="/deletebus/<%= bus._id %>"><i class="fa fa-trash" style="font-size:22px; color:white;"></i></a></button>
               </div>
             </div>
           </div>

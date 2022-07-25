@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const bus = require('../../models/bus');
+const travelSchedule = require('../../models/travelSchedule');
 
 const { successResponse, errorResponse } = require('../../utils');
 
@@ -54,7 +55,7 @@ const addBusView = async (req, res) => {
 const deleteBus = async (req, res) => {
   try {
     const { id } = req.params;
-
+    
     // check if bus exist or not
     const busData = await bus.findOne({ _id: id });
     if (!busData) {
@@ -64,13 +65,12 @@ const deleteBus = async (req, res) => {
     // deleteing bus from database
     const deleteBusData = await bus.findByIdAndDelete(id);
 
-    return successResponse(
-      req,
-      res,
-      { deleteBusData, success: "BUS DELETED SUCCESSFULLY" },
-      200
-    );
+    // deleteing travel schedule related to that bus
+    const deleteTripData = await travelSchedule.deleteMany({ busId: id });
+    res.redirect("/bus");
+    
   } catch (error) {
+    console.log(error.message);
     return errorResponse(req, res, 'something went wrong', 400, { err: error });
   }
 };
