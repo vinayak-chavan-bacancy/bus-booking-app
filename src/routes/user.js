@@ -16,7 +16,7 @@ const {
 
 const route = express.Router();
 
-route.get('/loginview', loginView);
+route.get('/', loginView);
 route.post('/login', login);
 route.post('/register', userValidation, register);
 route.get('/logout', logout);
