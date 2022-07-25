@@ -20,10 +20,10 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src', 'views'));
 
 app.use(cookieParser());
-app.use('/', userRoutes);
-app.use('/', busRoutes);
-app.use('/', travelScheduleRoutes);
-app.use('/', bookingRoutes);
+app.use('/users', userRoutes);
+app.use('/bus', busRoutes);
+app.use('/trip', travelScheduleRoutes);
+app.use('/booking', bookingRoutes);
 
 app.listen(port, () => {
     console.log(`connection is live at port ${port}`);
