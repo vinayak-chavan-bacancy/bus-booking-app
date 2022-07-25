@@ -43,7 +43,6 @@ const login = async (req, res) => {
       // return successResponse(req, res, accessToken, 200);
     }
   } catch (error) {
-    console.log(error.message)
     return errorResponse(req, res, 'something went wrong!', 400, { err: error });
   }
 };
@@ -99,7 +98,6 @@ const viewProfile = async (req, res) => {
       // return successResponse(req, res, userData, 200);
     }
   } catch (error) {
-    console.log(error.message);
     return errorResponse(req, res, "something went wrong", 400);
   }
 };
@@ -125,7 +123,7 @@ const updateProfile = async (req, res) => {
     }
 
   } catch (error) {
-    console.log(error.message);
+
     return errorResponse(req, res, "something went wrong", 400);
   }
 }

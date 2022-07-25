@@ -41,7 +41,6 @@ const addSchedule = async (req, res) => {
     res.redirect("bus");
     // return successResponse(req, res, insertTrip, 200);
   } catch (error) {
-    console.log(error.message);
     return errorResponse(req, res, "something went wrong", 500, { err: error });
   }
 };

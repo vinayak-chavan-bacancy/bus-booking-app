@@ -101,7 +101,6 @@ const addBooking = async (req, res) => {
     res.redirect("/mybooking");
     // return successResponse(req, res, insertBooking, 200);
   } catch (error) {
-      console.log(error.message);
       return errorResponse(req, res, "something went wrong", 500, { err: error });
   }
 };
@@ -144,7 +143,6 @@ const viewBookingByTrip = async (req, res) => {
       // return successResponse(req, res, bookingData, 200);
     }
   } catch (error) {
-    console.log(error.message);
     return errorResponse(req, res, "something went wrong", 400, { err: error });
   }
 };
@@ -218,7 +216,6 @@ const cancelBooking = async (req, res) => {
     }
     // return successResponse(req, res, cancelBookingData, 200);
   } catch (error) {
-    console.log(error.message);
     return errorResponse(req, res, "something went wrong", 400, { err: error });
   }
 };
