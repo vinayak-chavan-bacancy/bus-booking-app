@@ -6,33 +6,34 @@ const bus = require("../../models/bus");
 const travelSchedule = require("../../models/travelSchedule");
 const booking = require("../../models/booking");
 
-const { successResponse, errorResponse } = require("../../utils");
+const { successResponse, errorResponse } = require("../../utils/index");
+const { mailOptions } = require("../../utils/mail");
+
 
 const addBooking = async (req, res) => {
   try {
     const { tripId } = req.params;
     const userId = req.user._id;
-    
+
     const { seats, totalAmount, requestedSeats } = req.body;
-    let status = 'Confirmed';
-    
+
+    let status = "Confirmed";
+
     // check if trip exist or not
     const tripData = await travelSchedule.findOne({ _id: tripId });
-    if (!tripData) 
-      return errorResponse(req, res, "trip not found", 404);
+    if (!tripData) return errorResponse(req, res, "trip not found", 404);
 
-    let requestSeatsArray = requestedSeats;
     let availableSeatsArray = tripData.availableSeats;
-    let busId = tripData.busId
+    let busId = tripData.busId;
 
-    const finalReqArr = requestSeatsArray.map(ele => parseInt(ele));
+    const finalReqArr = requestedSeats.map((ele) => parseInt(ele));
+    console.log(finalReqArr);
 
     // check if requested seats available or not
- 
+
     const diffArr = difference(finalReqArr, availableSeatsArray);
 
-
-    if(diffArr.length) {
+    if (diffArr.length) {
       return errorResponse(req, res, "seats already occupied", 500);
     }
 
@@ -49,18 +50,24 @@ const addBooking = async (req, res) => {
 
     // debiting booking amount from user wallet
     const userInfo = await user.findOne({ _id: userId });
-    let value = userInfo.wallet
-
+    let value = userInfo.wallet;
+    console.log(userInfo);
     // check if you have sufficient wallet balance to pay
-    if (value < totalAmount){
-      return errorResponse(req, res, "dont have sufficeint wallet balance", 500 );
-
+    if (value < totalAmount) {
+      return errorResponse(
+        req,
+        res,
+        "dont have sufficeint wallet balance",
+        500
+      );
     } else {
-
       // deducting amount from user wallet
-      const userData = await user.findOneAndUpdate({ _id: userId }, {
-        wallet: value - totalAmount
-      });
+      const userData = await user.findOneAndUpdate(
+        { _id: userId },
+        {
+          wallet: value - totalAmount,
+        }
+      );
     }
     // adding booking data
     const newBooking = new booking(payload);
@@ -79,7 +86,11 @@ const addBooking = async (req, res) => {
       { _id: tripId },
       { availableSeats: availableSeatsArray, totalBooking: totalBooking }
     );
-    res.redirect('/mybooking');
+
+    // sending bboking confrimation mail
+    mailOptions(tripData, userInfo, finalReqArr, busData);
+
+    res.redirect("/mybooking");
     // return successResponse(req, res, insertBooking, 200);
   } catch (error) {
       console.log(error.message);
