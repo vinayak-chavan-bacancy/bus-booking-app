@@ -7,7 +7,7 @@ const travelSchedule = require("../../models/travelSchedule");
 const booking = require("../../models/booking");
 
 const { successResponse, errorResponse } = require("../../utils/index");
-const { mailOptions } = require("../../utils/mail");
+const { sendmail } = require("../../utils/mail");
 
 
 const addBooking = async (req, res) => {
@@ -27,7 +27,6 @@ const addBooking = async (req, res) => {
     let busId = tripData.busId;
 
     const finalReqArr = requestedSeats.map((ele) => parseInt(ele));
-    console.log(finalReqArr);
 
     // check if requested seats available or not
 
@@ -51,7 +50,6 @@ const addBooking = async (req, res) => {
     // debiting booking amount from user wallet
     const userInfo = await user.findOne({ _id: userId });
     let value = userInfo.wallet;
-    console.log(userInfo);
     // check if you have sufficient wallet balance to pay
     if (value < totalAmount) {
       return errorResponse(
@@ -86,9 +84,19 @@ const addBooking = async (req, res) => {
       { _id: tripId },
       { availableSeats: availableSeatsArray, totalBooking: totalBooking }
     );
-
+    
     // sending bboking confrimation mail
-    mailOptions(tripData, userInfo, finalReqArr, busData);
+    sendmail(
+      userInfo.emailID,
+      "Bus Ticket Booking Confirmation",
+      ` <p> hello </p><strong> ${userInfo.username}, </strong> </br>
+            <p> your requested tickets ${finalReqArr} has been confirmed</p></br></br>
+            <p> Travelling Details </p>
+            <p> Bus Number : ${busData.busnumber} <br>
+            <p> On Date <strong> ${tripData.travelDate} </strong> </br>
+            <p> <strong> ${tripData.startingPoint} - ${tripData.destinationPoint} </strong> </p> </br>
+            <p> <strong> ${tripData.departureTime} - ${tripData.reachTime} </strong> </p> </br>`
+    );
 
     res.redirect("/mybooking");
     // return successResponse(req, res, insertBooking, 200);
@@ -189,11 +197,26 @@ const cancelBooking = async (req, res) => {
         { _id: tripId },
         {availableSeats: availableSeatsArray, totalBooking: totalBooking}
         )
-    }
+
       const bookingDetails = await booking
         .find({ userId: userId, status: { $ne: status } })
         .populate("travelScheduleId");
+
+      // sending cancelation mail
+      sendmail(
+        userData.emailID,
+        "Bus Ticket Booking Cancelation",
+        ` <p> hello </p><strong> ${userData.username}, </strong> </br>
+            <p> your requested tickets ${seats} has been canceled</p></br></br>
+            <p> Travelling Details </p>
+            <p> On Date <strong> ${trip.travelDate} </strong> </br>
+            <p> <strong> ${trip.startingPoint} - ${trip.destinationPoint} </strong> </p> </br>
+            <p> <strong> ${trip.departureTime} - ${trip.reachTime} </strong> </p> </br>`
+      );
+
       res.render("myBookings", { bookings: bookingDetails });
+    }
+  
     // return successResponse(req, res, cancelBookingData, 200);
   } catch (error) {
     console.log(error.message);
