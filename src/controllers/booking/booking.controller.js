@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { difference } = require('lodash');
+const { difference } = require("lodash");
 
 const user = require("../../models/user");
 const bus = require("../../models/bus");
@@ -8,7 +8,6 @@ const booking = require("../../models/booking");
 
 const { successResponse, errorResponse } = require("../../utils/index");
 const { sendmail } = require("../../utils/mail");
-
 
 const addBooking = async (req, res) => {
   try {
@@ -84,7 +83,7 @@ const addBooking = async (req, res) => {
       { _id: tripId },
       { availableSeats: availableSeatsArray, totalBooking: totalBooking }
     );
-    
+
     // sending bboking confrimation mail
     sendmail(
       userInfo.emailID,
@@ -101,7 +100,7 @@ const addBooking = async (req, res) => {
     res.redirect("/mybooking");
     // return successResponse(req, res, insertBooking, 200);
   } catch (error) {
-      return errorResponse(req, res, "something went wrong", 500, { err: error });
+    return errorResponse(req, res, "something went wrong", 500, { err: error });
   }
 };
 
@@ -129,11 +128,11 @@ const viewBookingByUser = async (req, res) => {
 const viewBookingByTrip = async (req, res) => {
   try {
     const { tripId } = req.params;
-    let status = 'Confirmed';
+    let status = "Confirmed";
 
     const bookingData = await booking
       .find({ travelScheduleId: tripId, status: status })
-      .populate('userId', 'username');
+      .populate("userId", "username");
 
     // check if booking is exist or not
     if (!bookingData) {
@@ -150,7 +149,7 @@ const viewBookingByTrip = async (req, res) => {
 const cancelBooking = async (req, res) => {
   try {
     const { id } = req.params;
-    let status = 'Canceled';
+    let status = "Canceled";
 
     // check if booking exist or not
     const bookingData = await booking.findOne({ _id: id });
@@ -173,10 +172,9 @@ const cancelBooking = async (req, res) => {
       }
     );
 
-    if(!cancelBookingData){
+    if (!cancelBookingData) {
       return errorResponse(req, res, "something went wrong", 400);
     } else {
-
       // updating user wallet amount for refund
       const userData = await user.findByIdAndUpdate(
         { _id: userId },
@@ -186,15 +184,15 @@ const cancelBooking = async (req, res) => {
       // updating booked seats to available seats
       const trip = await travelSchedule.findOne({ _id: tripId });
       let availableSeatsArray = trip.availableSeats;
-      availableSeatsArray.push(...seats); 
-      
+      availableSeatsArray.push(...seats);
+
       // updating total booking count
       let totalBooking = trip.totalBooking - numberOfSeats;
 
       const tripData = await travelSchedule.findByIdAndUpdate(
         { _id: tripId },
-        {availableSeats: availableSeatsArray, totalBooking: totalBooking}
-        )
+        { availableSeats: availableSeatsArray, totalBooking: totalBooking }
+      );
 
       const bookingDetails = await booking
         .find({ userId: userId, status: { $ne: status } })
@@ -221,16 +219,15 @@ const cancelBooking = async (req, res) => {
 };
 
 const addBookingView = async (req, res) => {
-  try{
+  try {
     let { tripId } = req.params;
 
     const tripData = await travelSchedule.findOne({ _id: tripId });
-    res.render('addBooking', {trip: tripData});
-
-  } catch (error){
+    res.render("addBooking", { trip: tripData });
+  } catch (error) {
     return errorResponse(req, res, "something went wrong", 400, { err: error });
   }
-}
+};
 
 module.exports = {
   addBooking,
