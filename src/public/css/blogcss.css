@@ -5,9 +5,11 @@
     box-shadow: 0px 0px 7px -1px grey;
     background: white;
 }
+
 .main-wrapper {
   background-color: white
 }
+
 .main-container {
   margin-top: 10px;    
   padding: 10px
@@ -26,6 +28,10 @@
   padding: 10px;  
   margin: 10px; 
 
+}
+
+.mainDiv {
+  margin-top:220px;
 }
 
 .error{

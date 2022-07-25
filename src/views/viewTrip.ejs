@@ -52,6 +52,7 @@
       let date=year + "-" + month + "-" + day; return date; 
     };%>
 
+    <% if(message == '') {%>
     <div class="main-wrapper mt-0">
       <div class="container main-container">
         <% trips.forEach(trip=> { %>
@@ -81,9 +82,21 @@
       </div>
     </div>
   </div>
+  <% } else { %>
+  <div class="d-flex justify-content-center mainDiv">
+    <h4><%= message %></h4></br/>
+  </div>
+  <div class="d-flex justify-content-center mt-2">
 
+  
+  <a href="/search" class="btn btn-danger">BACK</a>
+  </div>  
+  <% } %>
+    <div>
     <%- include('../views/partials/footer'); %>
+      </div>
 
+      
 </body>
 
 </html>

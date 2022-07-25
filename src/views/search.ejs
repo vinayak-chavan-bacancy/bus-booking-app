@@ -60,7 +60,7 @@
                 <div class="form-group">
                     <div class="container ">
                         <label for="travelDate">Travel Date</label>
-                        <input type="date" class="form-control" id="travelDate" name="travelDate" placeholder="Travel Date">
+                        <input type="date" class="form-control" id="travelDate" name="travelDate" placeholder="Travel Date" required>
                     </div>
                 </div>
                     
@@ -75,8 +75,31 @@
 </div>
 
     <%- include('../views/partials/footer'); %>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <script>
+        jQuery("#searchtrip").validate({
+            rules: {
+                startingPoint: {
+                    required: true
+                },
+                destinationPoint: {
+                    required: true
+                },
+            },
+            messages: {
+                startingPoint: {
+                    required: "Please enter starting point",
+                },
+                destinationPoint: {
+                    required: "Please enter destination point",
+                },
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0');

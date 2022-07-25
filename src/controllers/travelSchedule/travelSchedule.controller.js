@@ -102,7 +102,6 @@ const addTripView = async (req, res) => {
 const SearchSchedule = async (req, res) => {
   try {
     const { startingPoint, destinationPoint, travelDate } = req.body;
-
     // finding trip according to parameters
     const tripData = await travelSchedule.find({
       startingPoint: startingPoint,
@@ -111,13 +110,13 @@ const SearchSchedule = async (req, res) => {
     });
 
     // check if travel schedule is exist or not
-    if (!tripData) {
-      return errorResponse(req, res, "no trip schedule", 404);
+    if(tripData !== undefined) {
+      res.render("viewTrip", { trips: tripData, message: 'No Any Schedule Find' });
     } else {
-      
       res.render("viewTrip", { trips: tripData });
       // return successResponse(req, res, tripData, 200);
     }
+    
   } catch (error) {
     return errorResponse(req, res, "something went wrong", 400, { err: error });
   }
