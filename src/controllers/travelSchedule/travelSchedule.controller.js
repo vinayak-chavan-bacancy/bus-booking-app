@@ -59,7 +59,12 @@ const deleteSchedule = async (req, res) => {
     // deleteing bus from database
     const deleteTripData = await travelSchedule.findByIdAndDelete(id);
 
-    return successResponse(req, res, deleteTripData, 200);
+    return successResponse(
+      req,
+      res,
+      { deleteTripData, success: "TRIP DELETED SUCCESSFULLY" },
+      200
+    );
   } catch (error) {
     return errorResponse(req, res, "something went wrong", 400, { err: error });
   }

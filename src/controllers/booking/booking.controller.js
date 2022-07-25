@@ -216,7 +216,6 @@ const cancelBooking = async (req, res) => {
 
       res.render("myBookings", { bookings: bookingDetails });
     }
-  
     // return successResponse(req, res, cancelBookingData, 200);
   } catch (error) {
     console.log(error.message);

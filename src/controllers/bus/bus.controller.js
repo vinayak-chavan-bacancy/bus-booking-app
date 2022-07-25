@@ -12,7 +12,10 @@ const viewBus = async (req, res) => {
     if (!busData) {
       return errorResponse(req, res, 'bus Not Found', 404);
     } else {
-      res.render("viewBus", { buses: busData });
+      res.render("viewBus", {
+        buses: busData,
+        success: "",
+      });
       // return successResponse(req, res, busData, 200);
     }
 
@@ -61,7 +64,12 @@ const deleteBus = async (req, res) => {
     // deleteing bus from database
     const deleteBusData = await bus.findByIdAndDelete(id);
 
-    return successResponse(req, res, deleteBusData, 200);
+    return successResponse(
+      req,
+      res,
+      { deleteBusData, success: "BUS DELETED SUCCESSFULLY" },
+      200
+    );
   } catch (error) {
     return errorResponse(req, res, 'something went wrong', 400, { err: error });
   }
