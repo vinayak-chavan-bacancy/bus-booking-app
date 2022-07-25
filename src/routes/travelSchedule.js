@@ -1,6 +1,7 @@
 const express = require('express');
 const { auth } = require("../middlewares/auth");
 const { tripValidation } = require('../controllers/travelSchedule/travelSchedule.validation');
+const { isAdmin } = require("../middlewares/isAdmin");
 
 const {
   addSchedule,
@@ -13,10 +14,10 @@ const {
 const route = express.Router();
 
 // routes for admin
-route.post("/trip", tripValidation, addSchedule);
-route.get("/trip/:busId", auth, viewSchedule);
-route.get("/trips/:busId", auth, addTripView)
-route.delete('/trip/:id', auth, deleteSchedule);
+route.post("/trip", auth, isAdmin, tripValidation, addSchedule);
+route.get("/trip/:busId", auth, isAdmin, viewSchedule);
+route.get("/trips/:busId", auth, isAdmin, addTripView)
+route.delete('/trip/:id', auth, isAdmin, deleteSchedule);
 
 //routes for user
 route.post("/schedule", SearchSchedule);
